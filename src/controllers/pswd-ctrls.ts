@@ -68,3 +68,5 @@ const updatePassword = async (req: Request, res: Response) => {
         });
     }
 };
+
+export { updatePassword };

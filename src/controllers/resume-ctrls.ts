@@ -69,39 +69,6 @@ const postResume = async (req: Request, res: Response) => {
     }
 };
 
-const getResume = async (req: Request, res: Response) => {
-    try {
-        const id: string = req.params.id;
-        const resumeId: string = req.params.resumeId;
-
-        if (!id || !resumeId)
-            return res.status(400).json({ message: "Paramètre manquant" });
-
-        const candidate = await prisma.user.findUnique({
-            where: {
-                id: id,
-            },
-        });
-
-        if (!candidate)
-            return res.status(404).json({ message: "Candidat introuvable" });
-
-        const resume = await prisma.resume.findFirst({
-            where: {
-                id: resumeId,
-                userId: id,
-            },
-        });
-
-        if (!resume) return res.status(404).json({ message: "CV introuvable" });
-
-        res.status(200).json(resume);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ "Erreur lors de la récupération du CV": error });
-    }
-};
-
 //update resume
 const updateResume = async (req: Request, res: Response) => {
     try {
@@ -178,7 +145,6 @@ export {
     getAllResumes,
     getOneResume,
     postResume,
-    getResume,
     updateResume,
     deleteResume,
 };

@@ -127,7 +127,7 @@ const deleteApplication = async (req: Request, res: Response) => {
 };
 
 //Get all applications for one offer
-const getApplicationsByOffer = async (req: Request, res: Response) => {
+const getAllApplicationsByOffer = async (req: Request, res: Response) => {
     try {
         const offerId: string = req.params.id;
 
@@ -155,16 +155,16 @@ const getApplicationsByOffer = async (req: Request, res: Response) => {
 };
 
 //Get all applications for one user
-const getApplicationsByUser = async (req: Request, res: Response) => {
+const getAllApplicationsByCandidate = async (req: Request, res: Response) => {
     try {
-        const userId: string = req.params.id;
+        const candidateId: string = req.params.id;
 
-        if (!userId)
+        if (!candidateId)
             return res.status(400).json({ message: "Paramètre manquant" });
 
         const applications = await prisma.application.findMany({
             where: {
-                userId: userId,
+                userId: candidateId,
             },
         });
 
@@ -188,6 +188,6 @@ export {
     getOneApplication,
     postApplication,
     deleteApplication,
-    getApplicationsByOffer,
-    getApplicationsByUser,
+    getAllApplicationsByOffer,
+    getAllApplicationsByCandidate,
 };
