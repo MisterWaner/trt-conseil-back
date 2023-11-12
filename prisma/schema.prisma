@@ -34,7 +34,7 @@ model User {
 
 model Resume {
     id     String @id @default(uuid())
-    name   String
+    name   String?
     path   String
     user   User   @relation(fields: [userId], references: [id])
     userId String @unique
