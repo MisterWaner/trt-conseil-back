@@ -4,10 +4,14 @@ import { config } from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import methodOverride from "method-override";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 config();
 /****************** Create app ***********************/
 const app = express();
 const port = process.env.SERVER_PORT;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 /****************** Middlewares **********************/
 app.use(cors({
     origin: "*",
@@ -20,11 +24,32 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.use('/uploads', express.static(`${__dirname}/uploads`));
 /****************** Import Routers **********************/
+import roleRouter from "./routers/role-router.js";
+import userRouter from "./routers/user-router.js";
+import adminRouter from "./routers/admin-router.js";
+import consultantRouter from "./routers/consultant-router.js";
+import recruiterRouter from "./routers/recruiter-router.js";
+import candidatRouter from "./routers/candidat-router.js";
+import offerRouter from "./routers/offer-router.js";
+import applicationRouter from "./routers/application-router.js";
+import resumeRouter from "./routers/resume-router.js";
+import authRouter from "./routers/auth-router.js";
 /****************** Routes ******************************/
 app.get("/", (req, res) => {
     res.send("API démarée et fonctionnelle !");
 });
+app.use("/roles", roleRouter);
+app.use("/users", userRouter);
+app.use("/admins", adminRouter);
+app.use("/consultants", consultantRouter);
+app.use("/recruiters", recruiterRouter);
+app.use("/candidats", candidatRouter);
+app.use("/offers", offerRouter);
+app.use("/applications", applicationRouter);
+app.use("/resumes", resumeRouter);
+app.use("/auth", authRouter);
 /********************** Server **************************/
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);

@@ -55,6 +55,7 @@ async function main() {
                 password: faker.internet.password({ length: 25 }),
                 societyName: faker.company.name(),
                 address: faker.location.streetAddress(),
+                isApproved: true,
                 roleId: 3,
             },
         });
@@ -63,7 +64,7 @@ async function main() {
 
     const recruiters = await prisma.user.findMany({
         where: {
-            roleId: 4,
+            roleId: 3,
         },
     });
 

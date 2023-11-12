@@ -1,14 +1,11 @@
-import { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
-
 //Post role
-const createRole = async (req: Request, res: Response) => { 
+const createRole = async (req, res) => {
     try {
         const { name } = req.body;
         if (!name) {
             return res.status(400).json({ error: "Le nom est obligatoire" });
         }
-
         const role = await prisma.role.findUnique({
             where: {
                 name,
@@ -17,22 +14,20 @@ const createRole = async (req: Request, res: Response) => {
         if (role) {
             return res.status(400).json({ error: "Ce nom de rôle existe déjà" });
         }
-
         const newRole = await prisma.role.create({
             data: {
                 name,
             },
         });
-        return res.status(201).json({"Le rôle a bien été créé": newRole});
-
-    } catch (error) {
+        return res.status(201).json({ "Le rôle a bien été créé": newRole });
+    }
+    catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Erreur lors de la création" });
     }
 };
-
 //Get all roles
-const getAllRoles = async (req: Request, res: Response) => {
+const getAllRoles = async (req, res) => {
     try {
         const roles = await prisma.role.findMany({
             orderBy: {
@@ -40,14 +35,14 @@ const getAllRoles = async (req: Request, res: Response) => {
             },
         });
         return res.status(200).json(roles);
-    } catch (error) {
+    }
+    catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Erreur lors de la récupération" });
     }
 };
-
 //Get one role
-const getOneRole = async (req: Request, res: Response) => {
+const getOneRole = async (req, res) => {
     try {
         const { id } = req.params;
         const role = await prisma.role.findUnique({
@@ -59,14 +54,14 @@ const getOneRole = async (req: Request, res: Response) => {
             return res.status(404).json({ error: "Ce rôle n'existe pas" });
         }
         return res.status(200).json(role);
-    } catch (error) {
+    }
+    catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Erreur lors de la récupération" });
     }
 };
-
 //Update role
-const updateRole = async (req: Request, res: Response) => {
+const updateRole = async (req, res) => {
     try {
         const { id } = req.params;
         const { name } = req.body;
@@ -89,15 +84,15 @@ const updateRole = async (req: Request, res: Response) => {
                 name,
             },
         });
-        return res.status(200).json({"Le rôle a bien été modifié": updatedRole});
-    } catch (error) {
+        return res.status(200).json({ "Le rôle a bien été modifié": updatedRole });
+    }
+    catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Erreur lors de la modification" });
     }
 };
-
 //Delete role
-const deleteRole = async (req: Request, res: Response) => {
+const deleteRole = async (req, res) => {
     try {
         const { id } = req.params;
         const role = await prisma.role.findUnique({
@@ -113,11 +108,11 @@ const deleteRole = async (req: Request, res: Response) => {
                 id: Number(id),
             },
         });
-        return res.status(200).json({"Le rôle a bien été supprimé": role});
-    } catch (error) {
+        return res.status(200).json({ "Le rôle a bien été supprimé": role });
+    }
+    catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Erreur lors de la suppression" });
     }
 };
-
 export { createRole, getAllRoles, getOneRole, updateRole, deleteRole };
