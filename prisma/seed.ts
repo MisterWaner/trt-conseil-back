@@ -51,7 +51,7 @@ async function main() {
         });
         await prisma.user.create({
             data: {
-                email: faker.internet.email({provider: `${faker.company.name().trim().split(" ").join("")}.fr}`}),
+                email: faker.internet.email({provider: `${faker.company.name().trim().split(" ").join("")}.fr`}),
                 password: faker.internet.password({ length: 25 }),
                 societyName: faker.company.name(),
                 address: faker.location.streetAddress(),
