@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.use('/uploads', express.static(`${__dirname}/uploads`));
+app.use("/uploads", express.static(`${__dirname}/uploads`));
 /****************** Import Routers **********************/
 import roleRouter from "./routers/role-router.js";
 import userRouter from "./routers/user-router.js";

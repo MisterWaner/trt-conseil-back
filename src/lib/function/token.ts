@@ -19,7 +19,5 @@ export async function generateToken(user: any) {
             expiresIn: maxAge,
         }
     );
-
-    console.log(token);
     return token;
 }

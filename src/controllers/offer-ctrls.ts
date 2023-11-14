@@ -72,7 +72,11 @@ const postOffer = async (req: Request, res: Response) => {
 //get all offers
 const getAllOffers = async (req: Request, res: Response) => {
     try {
-        const offers = await prisma.offer.findMany();
+        const offers = await prisma.offer.findMany({
+            orderBy: {
+                userId: "asc",
+            }
+        });
         res.status(200).json(offers);
     } catch (error) {
         console.error(error);
@@ -248,6 +252,9 @@ const getAllApprovedOffers = async (req: Request, res: Response) => {
             where: {
                 isApproved: true,
             },
+            orderBy: {
+                userId: "asc",
+            }
         });
         res.status(200).json(offers);
     } catch (error) {

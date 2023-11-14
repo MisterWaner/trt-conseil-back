@@ -80,6 +80,7 @@ async function main() {
                 contractType: "CDI",
                 place: faker.location.city(),
                 userId: recruiters[i].id,
+                isApproved: true,
             },
         });
     }

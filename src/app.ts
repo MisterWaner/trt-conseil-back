@@ -29,9 +29,8 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride("_method"))
-app.use('/uploads',express.static(`${__dirname}/uploads`))
-
+app.use(methodOverride("_method"));
+app.use("/uploads", express.static(`${__dirname}/uploads`));
 
 /****************** Import Routers **********************/
 import roleRouter from "./routers/role-router.js";
@@ -59,7 +58,6 @@ app.use("/offers", offerRouter);
 app.use("/applications", applicationRouter);
 app.use("/resumes", resumeRouter);
 app.use("/auth", authRouter);
-
 
 /********************** Server **************************/
 app.listen(port, () => {

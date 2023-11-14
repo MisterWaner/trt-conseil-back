@@ -12,6 +12,5 @@ export async function generateToken(user) {
     }, secret, {
         expiresIn: maxAge,
     });
-    console.log(token);
     return token;
 }
