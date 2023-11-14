@@ -132,7 +132,8 @@ const login = async (req, res) => {
                 message: "Utilisateur ou mot de passe incorrect",
             });
         }
-        const token = generateToken(user?.id);
+        const token = await generateToken(user?.id);
+        console.log(token);
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
@@ -140,8 +141,11 @@ const login = async (req, res) => {
             maxAge: 3600000,
         });
         res.status(200).json({
+            id: user?.id,
             token: token,
-            role: user?.roleId,
+            roleId: user?.roleId,
+            email: user?.email,
+            firstname: user?.firstname
         });
     }
     catch (error) {

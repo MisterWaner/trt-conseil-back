@@ -7,9 +7,10 @@ const prisma = new PrismaClient();
 async function main() {
     await prisma.offer.deleteMany();
     await prisma.user.deleteMany();
-
+    await prisma.role.deleteMany();
+    
     const length = 10;
-    const hashedPassword = await bcrypt.hash("admin1234", 10);
+    const hashedPassword = await bcrypt.hash("Admin1234!", 10);
 
     await prisma.role.createMany({
         data: [
