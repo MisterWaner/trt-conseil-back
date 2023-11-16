@@ -31,6 +31,7 @@ const getCandidateById = async (req: Request, res: Response) => {
         const candidate = await prisma.user.findUnique({
             where: {
                 id: id,
+                roleId: 4,
             },
         });
         if (!candidate)
@@ -52,13 +53,10 @@ const updateCandidate = async (req: Request, res: Response) => {
         const id = req.params.id;
         if (!id) return res.status(400).json({ message: "Paramètre manquant" });
 
-        const {
-            firstName,
-            lastName,
-            email,
-        }: { firstName: string; lastName: string; email: string } = req.body;
+        const { firstname, lastname }: { firstname: string; lastname: string } =
+            req.body;
 
-        if (!firstName || !lastName)
+        if (!firstname || !lastname)
             return res
                 .status(400)
                 .json({ message: "Le nom et le prénom sont obligatoires" });
@@ -76,14 +74,11 @@ const updateCandidate = async (req: Request, res: Response) => {
                 id: id,
             },
             data: {
-                firstname: firstName,
-                lastname: lastName,
-                email: email,
+                firstname: firstname,
+                lastname: lastname,
             },
         });
-        return res
-            .status(200)
-            .json({ message: "Candidat modifié", updatedCandidate });
+        res.status(200).json({ message: "Candidat modifié", updatedCandidate });
     } catch (error) {
         console.error(error);
         return res.status(500).json({
@@ -161,6 +156,7 @@ const getAllApprovedCandidates = async (req: Request, res: Response) => {
     try {
         const candidates = await prisma.user.findMany({
             where: {
+                roleId: 4,
                 isApproved: true,
             },
         });

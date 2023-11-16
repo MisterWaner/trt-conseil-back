@@ -92,12 +92,13 @@ const updateConsultant = async (req: Request, res: Response) => {
 //delete consultant
 const deleteConsultant = async (req: Request, res: Response) => {
     try {
-        const id = req.params.id;
+        const id = req.params.id
         if (!id) return res.status(400).json({ message: "Paramètre manquant" });
 
         const consultant = await prisma.user.findUnique({
             where: {
                 id: id,
+                roleId: 2,
             },
         });
         if (!consultant)
@@ -106,9 +107,11 @@ const deleteConsultant = async (req: Request, res: Response) => {
         await prisma.user.delete({
             where: {
                 id: id,
+                roleId: 2,
             },
         });
-        return res.status(200).json({ message: "Consultant supprimé" });
+        console.log("Consultant supprimé", consultant);
+        return res.status(200).json({ message: "Consultant supprimé", consultant });
     } catch (error) {
         console.error(error);
         return res.status(500).json({

@@ -90,6 +90,7 @@ const deleteConsultant = async (req, res) => {
         const consultant = await prisma.user.findUnique({
             where: {
                 id: id,
+                roleId: 2,
             },
         });
         if (!consultant)
@@ -97,9 +98,11 @@ const deleteConsultant = async (req, res) => {
         await prisma.user.delete({
             where: {
                 id: id,
+                roleId: 2,
             },
         });
-        return res.status(200).json({ message: "Consultant supprimé" });
+        console.log("Consultant supprimé", consultant);
+        return res.status(200).json({ message: "Consultant supprimé", consultant });
     }
     catch (error) {
         console.error(error);

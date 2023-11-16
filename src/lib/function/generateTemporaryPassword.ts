@@ -2,7 +2,7 @@
 export function generateTemporaryPassword(length: number): string {
     let result: string = "";
     const characters: string =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!?@#$%&*()_+=-";
 
     const charactersLength: number = characters.length;
 
