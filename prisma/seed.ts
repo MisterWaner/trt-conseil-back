@@ -72,6 +72,7 @@ async function main() {
     for (let i = 0; i < length; i++) {
         await prisma.offer.create({
             data: {
+                id: faker.string.uuid(),
                 title: faker.person.jobTitle(),
                 reference: faker.string.alphanumeric(10),
                 salary: faker.number.int({ min: 2000, max: 5000 }),

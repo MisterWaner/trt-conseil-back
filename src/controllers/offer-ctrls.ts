@@ -11,26 +11,30 @@ const postOffer = async (req: Request, res: Response) => {
             place,
             schedules,
             contractType,
-            offerReference,
+            id,
+            userId,
         }: {
             title: string;
             salary: number;
             place: string;
             schedules: string;
             contractType: string;
-            offerReference: string;
+            id: string;
+            userId: string;
         } = req.body;
 
-        const id: string = req.params.id;
-
-        if (!id) return res.status(400).json({ message: "Paramètre manquant" });
-
-        if (!title || !salary || !place || !schedules || !contractType)
-            return res.status(400).json({ message: "Paramètre manquant" });
+        if (
+            !title ||
+            !salary ||
+            !place ||
+            !schedules ||
+            !contractType
+        )
+            return res.status(400).json({ message: "Propriété manquantes" });
 
         const recruiter = await prisma.user.findUnique({
             where: {
-                id: id,
+                id: userId,
             },
         });
         if (!recruiter)
@@ -38,7 +42,7 @@ const postOffer = async (req: Request, res: Response) => {
 
         const offer = await prisma.offer.findUnique({
             where: {
-                reference: offerReference,
+                id: id,
             },
         });
 
@@ -57,12 +61,12 @@ const postOffer = async (req: Request, res: Response) => {
                 schedules: schedules,
                 contractType: contractType,
                 publicationDate: new Date(),
-                userId: recruiter.id,
+                userId: recruiter?.id,
                 isApproved: false,
             },
         });
 
-        res.status(200).json(newOffer);
+        res.status(201).json(newOffer);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: (error as Error).message });
@@ -75,7 +79,7 @@ const getAllOffers = async (req: Request, res: Response) => {
         const offers = await prisma.offer.findMany({
             orderBy: {
                 userId: "asc",
-            }
+            },
         });
         res.status(200).json(offers);
     } catch (error) {
@@ -89,14 +93,14 @@ const getAllOffers = async (req: Request, res: Response) => {
 //get one offer
 const getOneOffer = async (req: Request, res: Response) => {
     try {
-        const offerReference: string = req.params.reference;
+        const id: string = req.params.id;
 
-        if (!offerReference)
+        if (!id)
             return res.status(400).json({ message: "Paramètre manquant" });
 
         const offer = await prisma.offer.findUnique({
             where: {
-                reference: offerReference,
+                id: id,
             },
         });
         if (!offer)
@@ -114,15 +118,15 @@ const getOneOffer = async (req: Request, res: Response) => {
 //delete offer
 const deleteOffer = async (req: Request, res: Response) => {
     try {
-        const offerReference: string = req.params.reference;
+        const id: string = req.params.id;
         const recruiterId: string = req.params.id;
 
-        if (!offerReference)
+        if (!id)
             return res.status(400).json({ message: "Paramètre manquant" });
 
         const offer = await prisma.offer.findUnique({
             where: {
-                reference: offerReference,
+                id: id,
                 userId: recruiterId,
             },
         });
@@ -131,7 +135,7 @@ const deleteOffer = async (req: Request, res: Response) => {
 
         await prisma.offer.delete({
             where: {
-                reference: offerReference,
+                id: id,
                 userId: recruiterId,
             },
         });
@@ -180,9 +184,9 @@ const getAllOffersFromOneRecruiter = async (req: Request, res: Response) => {
 const getOneOfferFromOneRecruiter = async (req: Request, res: Response) => {
     try {
         const recruiterId: string = req.params.id;
-        const offerReference: string = req.params.reference;
+        const id: string = req.params.id;
 
-        if (!recruiterId || !offerReference)
+        if (!recruiterId || !id)
             return res.status(400).json({ message: "Paramètre manquant" });
 
         const recruiter = await prisma.user.findUnique({
@@ -195,7 +199,7 @@ const getOneOfferFromOneRecruiter = async (req: Request, res: Response) => {
 
         const offer = await prisma.offer.findUnique({
             where: {
-                reference: offerReference,
+                id: id,
                 userId: recruiterId,
             },
         });
@@ -214,14 +218,14 @@ const getOneOfferFromOneRecruiter = async (req: Request, res: Response) => {
 //approve offer
 const approveOffer = async (req: Request, res: Response) => {
     try {
-        const offerReference: string = req.params.reference;
+        const id: string = req.params.id;
 
-        if (!offerReference)
+        if (!id)
             return res.status(400).json({ message: "Paramètre manquant" });
 
         const offer = await prisma.offer.findUnique({
             where: {
-                reference: offerReference,
+                id: id,
             },
         });
         if (!offer)
@@ -229,7 +233,7 @@ const approveOffer = async (req: Request, res: Response) => {
 
         await prisma.offer.update({
             where: {
-                reference: offerReference,
+                id: id,
             },
             data: {
                 isApproved: true,
@@ -254,7 +258,7 @@ const getAllApprovedOffers = async (req: Request, res: Response) => {
             },
             orderBy: {
                 userId: "asc",
-            }
+            },
         });
         res.status(200).json(offers);
     } catch (error) {

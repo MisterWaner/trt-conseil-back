@@ -75,7 +75,7 @@ const postApplication = async (req: Request, res: Response) => {
         });
         if (application)
             return res
-                .status(400)
+                .status(409)
                 .json({ message: "Vous avez déjà postulé à cette offre" });
 
         // Create application
@@ -157,15 +157,24 @@ const getAllApplicationsByOffer = async (req: Request, res: Response) => {
 //Get all applications for one user
 const getAllApplicationsByCandidate = async (req: Request, res: Response) => {
     try {
-        const candidateId: string = req.params.id;
+        const id: string = req.params.id;
 
-        if (!candidateId)
+        if (!id)
             return res.status(400).json({ message: "Paramètre manquant" });
 
         const applications = await prisma.application.findMany({
             where: {
-                userId: candidateId,
+                userId: id,
             },
+            include: {
+                offer: {
+                    include: {
+                        user: true,
+                    }
+                },
+                user: true,
+            }, 
+            
         });
 
         if (!applications)

@@ -48,7 +48,7 @@ const updateRecruiter = async (req, res) => {
         const id = req.params.id;
         if (!id)
             return res.status(400).json({ message: "Paramètre manquant" });
-        const { firstName, lastName, societyName, email, address, } = req.body;
+        const { firstname, lastname, societyName, email, address, } = req.body;
         if (!societyName || !address)
             return res
                 .status(400)
@@ -65,8 +65,8 @@ const updateRecruiter = async (req, res) => {
                 id: id,
             },
             data: {
-                firstname: firstName,
-                lastname: lastName,
+                firstname: firstname,
+                lastname: lastname,
                 societyName: societyName,
                 email: email,
                 address: address,

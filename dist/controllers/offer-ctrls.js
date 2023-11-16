@@ -3,22 +3,23 @@ import { generateOfferReference } from "../lib/function/generateOfferReference.j
 //Post offer
 const postOffer = async (req, res) => {
     try {
-        const { title, salary, place, schedules, contractType, offerReference, } = req.body;
-        const id = req.params.id;
-        if (!id)
-            return res.status(400).json({ message: "Paramètre manquant" });
-        if (!title || !salary || !place || !schedules || !contractType)
-            return res.status(400).json({ message: "Paramètre manquant" });
+        const { title, salary, place, schedules, contractType, reference, userId, } = req.body;
+        if (!title ||
+            !salary ||
+            !place ||
+            !schedules ||
+            !contractType)
+            return res.status(400).json({ message: "Propriété manquantes" });
         const recruiter = await prisma.user.findUnique({
             where: {
-                id: id,
+                id: userId,
             },
         });
         if (!recruiter)
             return res.status(404).json({ message: "Recruteur introuvable" });
         const offer = await prisma.offer.findUnique({
             where: {
-                reference: offerReference,
+                reference: reference,
             },
         });
         if (offer)
@@ -33,11 +34,11 @@ const postOffer = async (req, res) => {
                 schedules: schedules,
                 contractType: contractType,
                 publicationDate: new Date(),
-                userId: recruiter.id,
+                userId: recruiter?.id,
                 isApproved: false,
             },
         });
-        res.status(200).json(newOffer);
+        res.status(201).json(newOffer);
     }
     catch (error) {
         console.log(error);
@@ -50,7 +51,7 @@ const getAllOffers = async (req, res) => {
         const offers = await prisma.offer.findMany({
             orderBy: {
                 userId: "asc",
-            }
+            },
         });
         res.status(200).json(offers);
     }
@@ -210,7 +211,7 @@ const getAllApprovedOffers = async (req, res) => {
             },
             orderBy: {
                 userId: "asc",
-            }
+            },
         });
         res.status(200).json(offers);
     }
