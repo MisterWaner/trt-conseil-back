@@ -43,13 +43,13 @@ model Resume {
 model Offer {
     id              String        @id @default(uuid())
     title           String
-    reference       String     
+    reference       String?  
     salary          Int
     place           String
     schedules       String
     contractType    String
-    publicationDate DateTime
-    isApproved      Boolean       @default(false)
+    publicationDate DateTime?
+    isApproved      Boolean?       @default(false)
     user            User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     userId          String
     applications    Application[]

@@ -35,12 +35,12 @@ const getOneApplication = async (req, res) => {
 const postApplication = async (req, res) => {
     try {
         const { offerId, userId } = await req.body;
-        if (!offerId)
+        if (!offerId || !userId)
             return res.status(400).json({ message: "Paramètre manquant" });
         // Check if offer exists
         const offer = await prisma.offer.findUnique({
             where: {
-                reference: offerId,
+                id: offerId,
             },
         });
         if (!offer) {
@@ -68,6 +68,11 @@ const postApplication = async (req, res) => {
                 .status(409)
                 .json({ message: "Vous avez déjà postulé à cette offre" });
         // Create application
+        if (!candidate || candidate.isApproved === false) {
+            return res
+                .status(403)
+                .json({ message: "Vous n'êtes pas autorisé à postuler" });
+        }
         const newApplication = await prisma.application.create({
             data: {
                 offerId: offerId,
@@ -149,7 +154,7 @@ const getAllApplicationsByCandidate = async (req, res) => {
                 offer: {
                     include: {
                         user: true,
-                    }
+                    },
                 },
                 user: true,
             },
@@ -167,5 +172,32 @@ const getAllApplicationsByCandidate = async (req, res) => {
             .json({ message: "Erreur lors de la récupération" });
     }
 };
+const getAllApplicationsByRecruiter = async (req, res) => {
+    try {
+        const id = req.params.id;
+        if (!id)
+            return res.status(400).json({ message: "Paramètre manquant" });
+        const applications = await prisma.application.findMany({
+            where: {
+                userId: id,
+            },
+            include: {
+                user: true,
+                offer: true
+            }
+        });
+        if (!applications)
+            return res
+                .status(404)
+                .json({ message: "Aucune candidature trouvée" });
+        res.status(200).json(applications);
+    }
+    catch (error) {
+        console.log(error);
+        return res
+            .status(500)
+            .json({ message: "Erreur lors de la récupération" });
+    }
+};
 //export controllers
-export { getAllApplications, getOneApplication, postApplication, deleteApplication, getAllApplicationsByOffer, getAllApplicationsByCandidate, };
+export { getAllApplications, getOneApplication, postApplication, deleteApplication, getAllApplicationsByOffer, getAllApplicationsByCandidate, getAllApplicationsByRecruiter, };

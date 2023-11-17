@@ -5,25 +5,28 @@ import { generateOfferReference } from "../lib/function/generateOfferReference.j
 //Post offer
 const postOffer = async (req: Request, res: Response) => {
     try {
-        const {
+        let {
             title,
             salary,
             place,
             schedules,
             contractType,
-            id,
             userId,
+            reference,
+            id,
         }: {
             title: string;
             salary: number;
             place: string;
             schedules: string;
             contractType: string;
-            id: string;
             userId: string;
-        } = req.body;
+            reference: string;
+            id: string;
+        } = await req.body;
 
         if (
+            !userId ||
             !title ||
             !salary ||
             !place ||
@@ -40,27 +43,31 @@ const postOffer = async (req: Request, res: Response) => {
         if (!recruiter)
             return res.status(404).json({ message: "Recruteur introuvable" });
 
-        const offer = await prisma.offer.findUnique({
+        const offer = await prisma.offer.findFirst({
             where: {
                 id: id,
+                userId: userId,
             },
         });
 
         if (offer)
-            return res.status(400).json({ message: "Offre déjà existante" });
+            return res.status(409).json({ message: "Offre déjà existante" });
 
-        const generatedOfferReference = generateOfferReference(
+        
+        const date = new Date();
+        reference = generateOfferReference(
             recruiter.societyName as string
         );
+
         const newOffer = await prisma.offer.create({
             data: {
-                reference: generatedOfferReference,
+                reference: reference,
                 title: title,
                 salary: salary,
                 place: place,
                 schedules: schedules,
                 contractType: contractType,
-                publicationDate: new Date(),
+                publicationDate: date,
                 userId: recruiter?.id,
                 isApproved: false,
             },
@@ -95,8 +102,7 @@ const getOneOffer = async (req: Request, res: Response) => {
     try {
         const id: string = req.params.id;
 
-        if (!id)
-            return res.status(400).json({ message: "Paramètre manquant" });
+        if (!id) return res.status(400).json({ message: "Paramètre manquant" });
 
         const offer = await prisma.offer.findUnique({
             where: {
@@ -121,8 +127,7 @@ const deleteOffer = async (req: Request, res: Response) => {
         const id: string = req.params.id;
         const recruiterId: string = req.params.id;
 
-        if (!id)
-            return res.status(400).json({ message: "Paramètre manquant" });
+        if (!id) return res.status(400).json({ message: "Paramètre manquant" });
 
         const offer = await prisma.offer.findUnique({
             where: {
@@ -152,14 +157,14 @@ const deleteOffer = async (req: Request, res: Response) => {
 //get all offers from one recruiter
 const getAllOffersFromOneRecruiter = async (req: Request, res: Response) => {
     try {
-        const recruiterId: string = req.params.id;
+        const userId: string = req.params.id;
 
-        if (!recruiterId)
+        if (!userId)
             return res.status(400).json({ message: "Paramètre manquant" });
 
         const recruiter = await prisma.user.findUnique({
             where: {
-                id: recruiterId,
+                id: userId,
             },
         });
         if (!recruiter)
@@ -167,7 +172,7 @@ const getAllOffersFromOneRecruiter = async (req: Request, res: Response) => {
 
         const offers = await prisma.offer.findMany({
             where: {
-                userId: recruiterId,
+                userId: recruiter.id,
             },
         });
 
@@ -220,8 +225,7 @@ const approveOffer = async (req: Request, res: Response) => {
     try {
         const id: string = req.params.id;
 
-        if (!id)
-            return res.status(400).json({ message: "Paramètre manquant" });
+        if (!id) return res.status(400).json({ message: "Paramètre manquant" });
 
         const offer = await prisma.offer.findUnique({
             where: {

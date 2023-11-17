@@ -41,13 +41,13 @@ const postApplication = async (req: Request, res: Response) => {
         const { offerId, userId }: { offerId: string; userId: string } =
             await req.body;
 
-        if (!offerId)
+        if (!offerId || !userId)
             return res.status(400).json({ message: "Paramètre manquant" });
 
         // Check if offer exists
         const offer = await prisma.offer.findUnique({
             where: {
-                reference: offerId,
+                id: offerId,
             },
         });
 
@@ -79,6 +79,12 @@ const postApplication = async (req: Request, res: Response) => {
                 .json({ message: "Vous avez déjà postulé à cette offre" });
 
         // Create application
+        if (!candidate || candidate.isApproved === false) {
+            return res
+                .status(403)
+                .json({ message: "Vous n'êtes pas autorisé à postuler" });
+        }
+
         const newApplication = await prisma.application.create({
             data: {
                 offerId: offerId,
@@ -159,8 +165,7 @@ const getAllApplicationsByCandidate = async (req: Request, res: Response) => {
     try {
         const id: string = req.params.id;
 
-        if (!id)
-            return res.status(400).json({ message: "Paramètre manquant" });
+        if (!id) return res.status(400).json({ message: "Paramètre manquant" });
 
         const applications = await prisma.application.findMany({
             where: {
@@ -170,11 +175,39 @@ const getAllApplicationsByCandidate = async (req: Request, res: Response) => {
                 offer: {
                     include: {
                         user: true,
-                    }
+                    },
                 },
                 user: true,
-            }, 
-            
+            },
+        });
+
+        if (!applications)
+            return res
+                .status(404)
+                .json({ message: "Aucune candidature trouvée" });
+
+        res.status(200).json(applications);
+    } catch (error) {
+        console.log(error);
+        return res
+            .status(500)
+            .json({ message: "Erreur lors de la récupération" });
+    }
+};
+const getAllApplicationsByRecruiter = async (req: Request, res: Response) => {
+    try {
+        const id: string = req.params.id;
+
+        if (!id) return res.status(400).json({ message: "Paramètre manquant" });
+
+        const applications = await prisma.application.findMany({
+            where: {
+                userId: id,
+            },
+            include: {
+                user: true,
+                offer: true
+            }
         });
 
         if (!applications)
@@ -199,4 +232,6 @@ export {
     deleteApplication,
     getAllApplicationsByOffer,
     getAllApplicationsByCandidate,
+    getAllApplicationsByRecruiter,
+    
 };

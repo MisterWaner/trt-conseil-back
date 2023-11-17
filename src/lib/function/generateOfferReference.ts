@@ -1,6 +1,6 @@
 //Function to get the first letters of the society name
 function getFirstLettersOfSocietyName(societyName: string): string {
-    const societyNameWithoutSpaces: string = societyName.split(" ").join("");
+    const societyNameWithoutSpaces: string = societyName.split(/\s+/).join("");
     const societyNameInUpperCase: string = societyNameWithoutSpaces.toUpperCase();
     const firstLettersOfSocietyName: string = societyNameInUpperCase.slice(0, 6);
 

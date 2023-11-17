@@ -8,6 +8,9 @@ const getAllConsultants = async (req: Request, res: Response) => {
             where: {
                 roleId: 2,
             },
+            orderBy: {
+                id: "asc",
+            },
         });
         if (!consultants)
             return res.status(404).json({ message: "Aucun consultant trouvé" });
