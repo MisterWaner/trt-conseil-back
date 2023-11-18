@@ -43,7 +43,7 @@ model Resume {
 model Offer {
     id              String        @id @default(uuid())
     title           String
-    reference       String?  
+    reference       String?     @unique  
     salary          Int
     place           String
     schedules       String

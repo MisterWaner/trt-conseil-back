@@ -23,6 +23,11 @@ const updatePassword = async (req, res) => {
         const decryptedCurrentPassword = await bcrypt.compare(currentPassword, user.password);
         if (!decryptedCurrentPassword)
             return res.status(401).json({ message: "Mot de passe incorrect" });
+        if (currentPassword === newPassword) {
+            return res
+                .status(400)
+                .json({ message: "Le nouveau mot de passe est identique" });
+        }
         //Check if new password and confirmation match
         if (newPassword !== confirmation)
             return res

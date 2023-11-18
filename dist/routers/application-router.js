@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { deleteApplication, getAllApplications, getAllApplicationsByOffer, getOneApplication, postApplication, } from "../controllers/application-ctrls.js";
+import { ApplicationController } from "../controllers/application-ctrls.js";
 const applicationRouter = Router();
-applicationRouter.get("/", getAllApplications);
-applicationRouter.get("/:id", getOneApplication);
-applicationRouter.get("/offer/:id", getAllApplicationsByOffer);
-applicationRouter.post("/", postApplication);
-applicationRouter.delete("/:id", deleteApplication);
+const applicationController = new ApplicationController();
+applicationRouter.get("/", applicationController.getAllApplications);
+applicationRouter.get("/:id", applicationController.getOneApplication);
+applicationRouter.get("/offer/:id", applicationController.getAllApplicationsByOffer);
+applicationRouter.post("/", applicationController.postApplication);
+applicationRouter.delete("/:id", applicationController.deleteApplication);
 export default applicationRouter;

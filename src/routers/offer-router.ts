@@ -1,24 +1,20 @@
 import { Router } from "express";
 import {
-    approveOffer,
-    deleteOffer,
-    getAllApprovedOffers,
-    getAllOffers,
-    getAllUnapprovedOffers,
-    getOneOffer,
-    postOffer,
+    OffersController
 } from "../controllers/offer-ctrls.js";
-import { getAllApplicationsByOffer } from "../controllers/application-ctrls.js";
+import { ApplicationController } from "../controllers/application-ctrls.js";
 
 const offerRouter: Router = Router();
+const offerController = new OffersController();
+const applicationController = new ApplicationController();
 
-offerRouter.get("/", getAllOffers);
-offerRouter.get("/approved", getAllApprovedOffers);
-offerRouter.get("/unapproved", getAllUnapprovedOffers);
-offerRouter.get("/:id", getOneOffer);
-offerRouter.post("/", postOffer);
-offerRouter.delete("/:id", deleteOffer);
-offerRouter.put("/:id/approve", approveOffer);
-offerRouter.get("/:id/applications", getAllApplicationsByOffer);
+offerRouter.get("/", offerController.getAllOffers);
+offerRouter.get("/approved", offerController.getAllApprovedOffers);
+offerRouter.get("/unapproved", offerController.getAllUnapprovedOffers);
+offerRouter.get("/:id", offerController.getOneOffer);
+offerRouter.post("/", offerController.postOffer);
+offerRouter.delete("/:id", offerController.deleteOffer);
+offerRouter.put("/:id/approve", offerController.approveOffer);
+offerRouter.get("/:id/applications", applicationController.getAllApplicationsByOffer);
 
 export default offerRouter;

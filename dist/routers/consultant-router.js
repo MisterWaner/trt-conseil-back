@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { deleteConsultant, getAllConsultants, getConsultantById, updateConsultant, } from "../controllers/consultant-ctrls.js";
-import { createConsultant } from "../controllers/auth-ctrls.js";
+import { AuthController } from "../controllers/auth-ctrls.js";
 const consultantRouter = Router();
-consultantRouter.post("/", createConsultant);
+const authController = new AuthController();
+consultantRouter.post("/", authController.createConsultant);
 consultantRouter.get("/", getAllConsultants);
 consultantRouter.get("/:id", getConsultantById);
 consultantRouter.put("/:id", updateConsultant);
