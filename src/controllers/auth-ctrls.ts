@@ -161,13 +161,11 @@ export class AuthController {
                             isApproved: false,
                         },
                     });
-                    return res
-                        .status(201)
-                        .json({
-                            newCandidate,
-                            password,
-                            message: "Candidat créé",
-                        });
+                    return res.status(201).json({
+                        newCandidate,
+                        password,
+                        message: "Candidat créé",
+                    });
                 }
             }
         } catch (error) {

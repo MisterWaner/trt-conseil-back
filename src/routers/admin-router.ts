@@ -1,19 +1,17 @@
 import { Router } from "express";
 import {
-    deleteAdmin,
-    getAdminById,
-    getAllAdmins,
-    updateAdmin,
+    AdminController
 } from "../controllers/admin-ctrls.js";
 import {AuthController} from "../controllers/auth-ctrls.js"
 
 const adminRouter: Router = Router();
 const authController = new AuthController();
+const adminController = new AdminController();
 
 adminRouter.post("/", authController.createAdmin);
-adminRouter.get("/", getAllAdmins);
-adminRouter.get("/:id", getAdminById);
-adminRouter.put("/:id", updateAdmin);
-adminRouter.delete("/:id", deleteAdmin);
+adminRouter.get("/", adminController.getAllAdmins);
+adminRouter.get("/:id", adminController.getAdminById);
+adminRouter.put("/:id", adminController.updateAdmin);
+adminRouter.delete("/:id", adminController.deleteAdmin);
 
 export default adminRouter;

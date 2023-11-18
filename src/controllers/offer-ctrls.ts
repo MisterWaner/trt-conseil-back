@@ -220,7 +220,6 @@ export class OffersController {
         }
     }
 
-    //approve offer
     async approveOffer(req: Request, res: Response) {
         try {
             const id: string = req.params.id;
@@ -272,7 +271,6 @@ export class OffersController {
         }
     }
 
-    //get all unapproved offers
     async getAllUnapprovedOffers(req: Request, res: Response) {
         try {
             const offers = await prisma.offer.findMany({
