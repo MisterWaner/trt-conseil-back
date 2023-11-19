@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { getAllUsers, getOneUser } from "../controllers/user-ctrls.js";
-import { updatePassword } from "../controllers/pswd-ctrls.js";
+import { UserController } from "../controllers/user-ctrls.js";
+import { PasswordController } from "../controllers/pswd-ctrls.js";
 const userRouter = Router();
-userRouter.get("/", getAllUsers);
-userRouter.get("/:id", getOneUser);
-userRouter.put("/:id/reset-password", updatePassword);
+const passwordController = new PasswordController();
+const userController = new UserController();
+userRouter.get("/", userController.getAllUsers);
+userRouter.get("/:id", userController.getOneUser);
+userRouter.put("/:id/reset-password", passwordController.updatePassword);
 export default userRouter;

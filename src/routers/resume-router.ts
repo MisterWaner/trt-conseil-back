@@ -7,8 +7,8 @@ const resumeController = new ResumeController();
 
 resumeRouter.get("/", resumeController.getAllResumes);
 resumeRouter.get("/:id", resumeController.getOneResume);
-resumeRouter.post("/", uploadResume.single('file'), resumeController.postResume);
-resumeRouter.put("/:id", uploadResume.single('file'), resumeController.updateResume);
+resumeRouter.post("/", uploadResume.single('resume'), resumeController.postResume);
+resumeRouter.put("/:id", uploadResume.single('resume'), resumeController.updateResume);
 resumeRouter.delete("/:id", resumeController.deleteResume);
 
 export default resumeRouter;

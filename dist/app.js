@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.use("/uploads", express.static(`${__dirname}/uploads`));
+app.use("/upload", express.static(`${__dirname}/upload`));
 /****************** Import Routers **********************/
 import roleRouter from "./routers/role-router.js";
 import userRouter from "./routers/user-router.js";
@@ -34,8 +34,8 @@ import recruiterRouter from "./routers/recruiter-router.js";
 import candidatRouter from "./routers/candidat-router.js";
 import offerRouter from "./routers/offer-router.js";
 import applicationRouter from "./routers/application-router.js";
-import resumeRouter from "./routers/resume-router.js";
 import authRouter from "./routers/auth-router.js";
+import resumeRouter from "./routers/resume-router.js";
 /****************** Routes ******************************/
 app.get("/", (req, res) => {
     res.send("API démarée et fonctionnelle !");
@@ -48,8 +48,8 @@ app.use("/recruiters", recruiterRouter);
 app.use("/candidats", candidatRouter);
 app.use("/offers", offerRouter);
 app.use("/applications", applicationRouter);
-app.use("/resumes", resumeRouter);
 app.use("/auth", authRouter);
+app.use("/resumes", resumeRouter);
 /********************** Server **************************/
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);

@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { createRole, deleteRole, getAllRoles, getOneRole, updateRole, } from "../controllers/role-ctrls.js";
+import { RoleController } from "../controllers/role-ctrls.js";
 const roleRouter = Router();
-roleRouter.get("/", getAllRoles);
-roleRouter.get("/:id", getOneRole);
-roleRouter.post("/", createRole);
-roleRouter.put("/:id", updateRole);
-roleRouter.delete("/:id", deleteRole);
+const roleController = new RoleController();
+roleRouter.get("/", roleController.getAllRoles);
+roleRouter.get("/:id", roleController.getOneRole);
+roleRouter.post("/", roleController.createRole);
+roleRouter.put("/:id", roleController.updateRole);
+roleRouter.delete("/:id", roleController.deleteRole);
 export default roleRouter;

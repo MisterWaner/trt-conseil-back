@@ -40,56 +40,86 @@ export class ResumeController {
 
     async postResume(req: Request, res: Response) {
         try {
-            const id: string = req.params.id;
-            const resumeUrl = `http://localhost:3001/uploads/resumes/${req.file?.filename}`;
+            const { userId } = req.body;
 
-            if (!id)
+            if (!req.file) {
+                return res.status(400).json({
+                    message:
+                        "Aucun fichier PDF n'a été trouvé, veuillez sélectionner un fichier PDF à télécharger",
+                });
+            }
+
+            const fileName = req.file.filename;
+            if (!fileName) {
+                return res.status(500).json({
+                    message:
+                        "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
+                });
+            }
+            const resumeUrl = `http://localhost:3001/upload/resumes/${fileName}`;
+
+            if (!userId)
                 return res.status(400).json({ message: "Paramètre manquant" });
 
             const candidate = await prisma.user.findUnique({
                 where: {
-                    id: id,
+                    id: userId,
                 },
             });
-
-            const fileName = req.file?.originalname;
-
             if (!candidate)
                 return res
                     .status(404)
                     .json({ message: "Candidat introuvable" });
 
-            const resume = await prisma.resume.create({
+            const newResume = await prisma.resume.create({
                 data: {
                     name: fileName,
                     path: resumeUrl,
-                    userId: id,
+                    userId: userId,
                 },
             });
 
-            res.status(200).json(resume);
+            return res.status(200).json({
+                message: "CV du candidat téléchargé avec succès",
+                newResume,
+            });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ "Erreur lors de l'envoie du CV": error });
+            return res.status(500).json({
+                message: "Erreur lors du téléchargement du CV du candidat",
+                error,
+            });
         }
     }
 
     async updateResume(req: Request, res: Response) {
         try {
+            const userId: string = req.body.userId;
             const id: string = req.params.id;
-            const resumeUrl = `http://localhost:3001/uploads/resumes/${req.file?.filename}`;
-            const resumeId: string = req.params.resumeId;
 
-            if (!id || !resumeId)
+            if (!req.file) {
+                return res.status(400).json({
+                    message:
+                        "Aucun fichier PDF n'a été trouvé, veuillez sélectionner un fichier PDF à télécharger",
+                });
+            }
+            const fileName = req.file.filename;
+            if (!fileName) {
+                return res.status(500).json({
+                    message:
+                        "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
+                });
+            }
+            const resumeUrl = `http://localhost:3001/uploads/resumes/${fileName}`;
+
+            if (!id || !userId)
                 return res.status(400).json({ message: "Paramètre manquant" });
 
             const candidate = await prisma.user.findUnique({
                 where: {
-                    id: id,
+                    id: userId,
                 },
             });
-
-            const fileName = req.file?.originalname;
 
             if (!candidate)
                 return res
@@ -98,10 +128,10 @@ export class ResumeController {
 
             const resume = await prisma.resume.update({
                 where: {
-                    userId: id,
+                    userId: userId,
                 },
                 data: {
-                    id: resumeId,
+                    id: id,
                     name: fileName,
                     path: resumeUrl,
                 },
@@ -119,26 +149,13 @@ export class ResumeController {
     async deleteResume(req: Request, res: Response) {
         try {
             const id: string = req.params.id;
-            const resumeId: string = req.params.resumeId;
 
-            if (!id || !resumeId)
+            if (!id)
                 return res.status(400).json({ message: "Paramètre manquant" });
-
-            const candidate = await prisma.user.findUnique({
-                where: {
-                    id: id,
-                },
-            });
-
-            if (!candidate)
-                return res
-                    .status(404)
-                    .json({ message: "Candidat introuvable" });
 
             const resume = await prisma.resume.delete({
                 where: {
-                    id: resumeId,
-                    userId: id,
+                    id: id,
                 },
             });
 
