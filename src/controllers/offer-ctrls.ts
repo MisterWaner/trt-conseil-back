@@ -3,6 +3,7 @@ import { prisma } from "../lib/prisma.js";
 import { generateOfferReference } from "../lib/function/generateOfferReference.js";
 
 export class OffersController {
+    //Get all offers
     async getAllOffers(req: Request, res: Response) {
         try {
             const offers = await prisma.offer.findMany({
@@ -19,6 +20,7 @@ export class OffersController {
         }
     }
 
+    //Get offer by id
     async getOneOffer(req: Request, res: Response) {
         try {
             const id: string = req.params.id;
@@ -43,6 +45,7 @@ export class OffersController {
         }
     }
 
+    //Create offer
     async postOffer(req: Request, res: Response) {
         try {
             const {
@@ -125,6 +128,7 @@ export class OffersController {
         }
     }
 
+    //Delete offer
     async deleteOffer(req: Request, res: Response) {
         try {
             const id: string = req.params.id;
@@ -153,6 +157,8 @@ export class OffersController {
             });
         }
     }
+
+    //Get all offers from one recruiter
     async getAllOffersFromOneRecruiter(req: Request, res: Response) {
         try {
             const id: string = req.params.id;
@@ -184,6 +190,8 @@ export class OffersController {
             });
         }
     }
+
+    //Get offer from one recruiter
     async getOneOfferFromOneRecruiter(req: Request, res: Response) {
         try {
             const recruiterId: string = req.params.id;
@@ -220,6 +228,7 @@ export class OffersController {
         }
     }
 
+    //Approve offer
     async approveOffer(req: Request, res: Response) {
         try {
             const id: string = req.params.id;
@@ -252,6 +261,8 @@ export class OffersController {
             });
         }
     }
+
+    //Get all approved offers
     async getAllApprovedOffers(req: Request, res: Response) {
         try {
             const offers = await prisma.offer.findMany({
@@ -271,6 +282,7 @@ export class OffersController {
         }
     }
 
+    //Get all unapproved offers
     async getAllUnapprovedOffers(req: Request, res: Response) {
         try {
             const offers = await prisma.offer.findMany({

@@ -1,4 +1,10 @@
 //Function to generate a temporary password durign the creation of a consultant
+/**
+ * Generates a temporary password of the specified length.
+ * @param length The length of the temporary password.
+ * @returns The generated temporary password.
+ */
+
 export function generateTemporaryPassword(length: number): string {
     let result: string = "";
     const characters: string =

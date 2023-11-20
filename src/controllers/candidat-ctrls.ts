@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import { prisma } from "../lib/prisma.js";
 
 export class CandidatController {
+    //Get all candidates
     async getAllCandidates(req: Request, res: Response) {
         try {
             const candidates = await prisma.user.findMany({
@@ -24,6 +25,7 @@ export class CandidatController {
         }
     }
 
+    //Get candidate by id
     async getCandidateById(req: Request, res: Response) {
         try {
             const id = req.params.id;
@@ -51,6 +53,7 @@ export class CandidatController {
         }
     }
 
+    //Update candidate
     async updateCandidate(req: Request, res: Response) {
         try {
             const id = req.params.id;
@@ -99,6 +102,7 @@ export class CandidatController {
         }
     }
 
+    //Delete candidate
     async deleteCandidate(req: Request, res: Response) {
         try {
             const id = req.params.id;
@@ -130,6 +134,7 @@ export class CandidatController {
         }
     }
 
+    //Approve candidate
     async approveCandidate(req: Request, res: Response) {
         try {
             const id = req.params.id;
@@ -166,6 +171,7 @@ export class CandidatController {
         }
     }
 
+    //Get all approved candidates
     async getAllApprovedCandidates(req: Request, res: Response) {
         try {
             const candidates = await prisma.user.findMany({
@@ -184,6 +190,7 @@ export class CandidatController {
         }
     }
 
+    //Get all unapproved candidates
     async getAllUnapprovedCandidates(req: Request, res: Response) {
         try {
             const candidates = await prisma.user.findMany({
@@ -201,6 +208,7 @@ export class CandidatController {
         }
     }
 
+    //Get candidate resume
     async getCandidateResume(req: Request, res: Response) {
         try {
             const id = req.params.id;

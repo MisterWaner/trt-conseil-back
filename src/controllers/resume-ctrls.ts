@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
 
 export class ResumeController {
+    //Get all resumes
     async getAllResumes(req: Request, res: Response) {
         try {
             const resumes = await prisma.resume.findMany();
@@ -14,6 +15,7 @@ export class ResumeController {
         }
     }
 
+    //Get resume by id
     async getOneResume(req: Request, res: Response) {
         try {
             const id: string = req.params.id;
@@ -38,6 +40,7 @@ export class ResumeController {
         }
     }
 
+    //Post resume
     async postResume(req: Request, res: Response) {
         try {
             const { userId } : {userId: string} = req.body;
@@ -93,6 +96,7 @@ export class ResumeController {
         }
     }
 
+    //Update resume
     async updateResume(req: Request, res: Response) {
         try {
             const userId: string = req.body.userId;
@@ -147,6 +151,7 @@ export class ResumeController {
         }
     }
 
+    //Delete resume
     async deleteResume(req: Request, res: Response) {
         try {
             const id: string = req.params.id;

@@ -45,6 +45,8 @@ export class ApplicationController {
     //post application
     async postApplication(req: Request, res: Response) {
         try {
+
+            // Get offerId and userId from body
             const { offerId, userId }: { offerId: string; userId: string } =
                 await req.body;
 

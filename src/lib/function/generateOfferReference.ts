@@ -8,6 +8,12 @@ function getFirstLettersOfSocietyName(societyName: string): string {
 }
 
 //Function to generate the offer reference with the first letters of the society name, the actual year, the actual month and a random number
+/**
+ * Generates an offer reference based on the society name.
+ * 
+ * @param societyName - The name of the society.
+ * @returns The generated offer reference.
+ */
 export function generateOfferReference(societyName: string): string {
     const letters = getFirstLettersOfSocietyName(societyName);
     const actualYear: number = new Date().getFullYear();
