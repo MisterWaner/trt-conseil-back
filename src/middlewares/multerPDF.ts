@@ -11,7 +11,7 @@ const fileFilter = (req: any, file: any, cb: any) => {
 
 const storage = multer.diskStorage({
     destination: (req: any, file: any, cb: any) => {
-        cb(null, "dist/upload/resumes");
+        cb(null, `${process.cwd()}/dist/upload/resumes}`);
     },
     filename: (req: any, file: any, cb: any) => {
         const { userId } = req.body;
