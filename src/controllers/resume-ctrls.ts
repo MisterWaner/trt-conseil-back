@@ -53,12 +53,12 @@ export class ResumeController {
             }
 
             const fileName = req.file.filename;
-            if (!fileName) {
-                return res.status(500).json({
-                    message:
-                        "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
-                });
-            }
+            // if (!fileName) {
+            //     return res.status(500).json({
+            //         message:
+            //             "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
+            //     });
+            // }
             const resumeUrl = `http://localhost:3001/upload/resumes/${fileName}`;
 
             if (!userId)
@@ -109,12 +109,12 @@ export class ResumeController {
                 });
             }
             const fileName = req.file.filename;
-            if (!fileName) {
-                return res.status(500).json({
-                    message:
-                        "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
-                });
-            }
+            // if (!fileName) {
+            //     return res.status(500).json({
+            //         message:
+            //             "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
+            //     });
+            // }
             const resumeUrl = `http://localhost:3001/uploads/resumes/${fileName}`;
 
             if (!id || !userId)
