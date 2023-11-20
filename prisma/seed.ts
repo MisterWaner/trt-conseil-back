@@ -1,6 +1,9 @@
 import bcrypt from "bcrypt";
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
+import { config } from "dotenv";
+
+config();
 
 const prisma = new PrismaClient();
 
@@ -10,7 +13,7 @@ async function main() {
     await prisma.role.deleteMany();
     
     const length = 10;
-    const hashedPassword = await bcrypt.hash("Admin1234!", 10);
+    const hashedPassword = await bcrypt.hash("Test12345!", 10);
 
     await prisma.role.createMany({
         data: [
@@ -29,6 +32,33 @@ async function main() {
             isApproved: true,
         },
     });
+
+    await prisma.user.create({
+        data: {
+            email: "consultant.test@trt-conseil.fr",
+            password: hashedPassword,
+            roleId: 2,
+            isApproved: true,
+        }
+    })
+    await prisma.user.create({
+        data: {
+            email: "recruteur.test@gmail.com",
+            password: hashedPassword,
+            roleId: 3,
+            isApproved: true,
+        }
+    })
+    
+    await prisma.user.create({
+        data: {
+            email: "candidat.test@gmail.com",
+            password: hashedPassword,
+            roleId: 4,
+            isApproved: true,
+        }
+    })
+
 
     for (let i = 0; i < length; i++) {
 
