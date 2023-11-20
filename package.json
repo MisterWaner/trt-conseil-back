@@ -5,12 +5,12 @@
     "main": "app.js",
     "type": "module",
     "prisma": {
-        "seed": "ts-node-esm prisma/seed.ts"
+        "seed": "ts-node-esm src/prisma/seed.ts"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc",
-        "start": "node dist/app.js && npx prisma db seed",
+        "start": "node dist/app.js",
         "dev": "concurrently -k -n \"Typescript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon -r dotenv/config dist/app.js\" "
     },
     "author": "",
