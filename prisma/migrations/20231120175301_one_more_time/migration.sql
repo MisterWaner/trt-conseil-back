@@ -38,15 +38,16 @@ CREATE TABLE `Resume` (
 CREATE TABLE `Offer` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
-    `reference` VARCHAR(191) NOT NULL,
+    `reference` VARCHAR(191) NULL,
     `salary` INTEGER NOT NULL,
     `place` VARCHAR(191) NOT NULL,
     `schedules` VARCHAR(191) NOT NULL,
     `contractType` VARCHAR(191) NOT NULL,
-    `publicationDate` DATETIME(3) NOT NULL,
-    `isApproved` BOOLEAN NOT NULL DEFAULT false,
+    `publicationDate` DATETIME(3) NULL,
+    `isApproved` BOOLEAN NULL DEFAULT false,
     `userId` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `Offer_reference_key`(`reference`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
