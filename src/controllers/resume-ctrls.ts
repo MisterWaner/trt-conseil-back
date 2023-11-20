@@ -40,7 +40,7 @@ export class ResumeController {
 
     async postResume(req: Request, res: Response) {
         try {
-            const { userId } = req.body;
+            const { userId } : {userId: string} = req.body;
 
             if (!req.file) {
                 return res.status(400).json({
@@ -73,6 +73,7 @@ export class ResumeController {
 
             const newResume = await prisma.resume.create({
                 data: {
+                    id: userId,
                     name: fileName,
                     path: resumeUrl,
                     userId: userId,

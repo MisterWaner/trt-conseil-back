@@ -19,5 +19,7 @@ candidatRouter.put("/:id", candidatController.updateCandidate);
 candidatRouter.delete("/:id", candidatController.deleteCandidate);
 candidatRouter.put("/:id/approve", candidatController.approveCandidate);
 candidatRouter.get("/:id/applications", applicationController.getAllApplicationsByCandidate);
+candidatRouter.get("/:id/resume", candidatController.getCandidateResume)
+
 
 export default candidatRouter;

@@ -59,6 +59,7 @@ export class ResumeController {
                     .json({ message: "Candidat introuvable" });
             const newResume = await prisma.resume.create({
                 data: {
+                    id: userId,
                     name: fileName,
                     path: resumeUrl,
                     userId: userId,

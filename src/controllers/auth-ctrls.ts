@@ -185,7 +185,7 @@ export class AuthController {
 
             const user = await authenticate(email, password);
             if (!user) {
-                res.status(401).json({
+                return res.status(401).json({
                     message: "Utilisateur ou mot de passe incorrect",
                 });
             }
@@ -198,7 +198,7 @@ export class AuthController {
                 sameSite: "none",
                 maxAge: 3600000,
             });
-            res.status(200).json({
+            return res.status(200).json({
                 id: user?.id,
                 token: token,
                 isApproved: user?.isApproved,

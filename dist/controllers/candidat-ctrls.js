@@ -185,4 +185,28 @@ export class CandidatController {
             });
         }
     }
+    async getCandidateResume(req, res) {
+        try {
+            const id = req.params.id;
+            if (!id)
+                return res.status(400).json({ message: "Paramètre manquant" });
+            const resume = await prisma.resume.findUnique({
+                where: {
+                    userId: id,
+                },
+            });
+            if (!resume)
+                return res
+                    .status(404)
+                    .json({ message: "CV du candidat introuvable" });
+            return res.status(200).json(resume);
+        }
+        catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                message: "Erreur lors de la récupération du CV du candidat",
+                error,
+            });
+        }
+    }
 }
