@@ -43,12 +43,13 @@ export class ResumeController {
                 });
             }
             const fileName = req.file.filename;
-            if (!fileName) {
-                return res.status(500).json({
-                    message: "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
-                });
-            }
-            const resumeUrl = `http://localhost:3001/upload/resumes/${fileName}`;
+            // if (!fileName) {
+            //     return res.status(500).json({
+            //         message:
+            //             "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
+            //     });
+            // }
+            const resumeUrl = `https://trt-conseil-back.up.railway.app/upload/resumes/${fileName}`;
             if (!userId)
                 return res.status(400).json({ message: "Paramètre manquant" });
             const candidate = await prisma.user.findUnique({
@@ -92,12 +93,13 @@ export class ResumeController {
                 });
             }
             const fileName = req.file.filename;
-            if (!fileName) {
-                return res.status(500).json({
-                    message: "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
-                });
-            }
-            const resumeUrl = `http://localhost:3001/uploads/resumes/${fileName}`;
+            // if (!fileName) {
+            //     return res.status(500).json({
+            //         message:
+            //             "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
+            //     });
+            // }
+            const resumeUrl = `https://trt-conseil-back.up.railway.app/upload/resumes/${fileName}`;
             if (!id || !userId)
                 return res.status(400).json({ message: "Paramètre manquant" });
             const candidate = await prisma.user.findUnique({
