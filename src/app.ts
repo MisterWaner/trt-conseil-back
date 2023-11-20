@@ -30,7 +30,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.use("/upload", express.static(`${__dirname}/upload`));
+app.use("/upload", express.static(`${__dirname}/dist/upload`));
 
 /****************** Import Routers **********************/
 import roleRouter from "./routers/role-router.js";
