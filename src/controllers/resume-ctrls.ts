@@ -59,7 +59,7 @@ export class ResumeController {
             //             "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
             //     });
             // }
-            const resumeUrl = `http://localhost:3001/upload/resumes/${fileName}`;
+            const resumeUrl = `https://trt-conseil-back.up.railway.app/upload/resumes/${fileName}`;
 
             if (!userId)
                 return res.status(400).json({ message: "Paramètre manquant" });
@@ -115,7 +115,7 @@ export class ResumeController {
             //             "Une erreur interne s'est produite lors du traitement du fichier. Veuillez réessayer.",
             //     });
             // }
-            const resumeUrl = `http://localhost:3001/uploads/resumes/${fileName}`;
+            const resumeUrl = `https://trt-conseil-back.up.railway.app/upload/resumes/${fileName}`;
 
             if (!id || !userId)
                 return res.status(400).json({ message: "Paramètre manquant" });
