@@ -3,8 +3,6 @@ import {
     CandidatController
 } from "../controllers/candidat-ctrls.js";
 import { ApplicationController } from "../controllers/application-ctrls.js";
-import { ResumeController } from "../controllers/resume-ctrls.js";
-import uploadResume from "../middlewares/multerPDF.js";
 
 const candidatRouter: Router = Router();
 const applicationController = new ApplicationController();
