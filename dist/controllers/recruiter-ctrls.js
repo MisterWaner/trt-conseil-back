@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 export class RecruiterController {
+    //Get all recruiters
     async getAllRecruiters(req, res) {
         try {
             const recuiters = await prisma.user.findMany({
@@ -21,6 +22,7 @@ export class RecruiterController {
             });
         }
     }
+    //Get recruiter by id
     async getRecruiterById(req, res) {
         try {
             const id = req.params.id;
@@ -45,6 +47,7 @@ export class RecruiterController {
             });
         }
     }
+    //Update recruiter
     async updateRecruiter(req, res) {
         try {
             const id = req.params.id;
@@ -88,6 +91,7 @@ export class RecruiterController {
             });
         }
     }
+    //Delete recruiter
     async deleteRecruiter(req, res) {
         try {
             const id = req.params.id;

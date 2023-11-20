@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 export class CandidatController {
+    //Get all candidates
     async getAllCandidates(req, res) {
         try {
             const candidates = await prisma.user.findMany({
@@ -21,6 +22,7 @@ export class CandidatController {
             });
         }
     }
+    //Get candidate by id
     async getCandidateById(req, res) {
         try {
             const id = req.params.id;
@@ -46,6 +48,7 @@ export class CandidatController {
             });
         }
     }
+    //Update candidate
     async updateCandidate(req, res) {
         try {
             const id = req.params.id;
@@ -87,6 +90,7 @@ export class CandidatController {
             });
         }
     }
+    //Delete candidate
     async deleteCandidate(req, res) {
         try {
             const id = req.params.id;
@@ -116,6 +120,7 @@ export class CandidatController {
             });
         }
     }
+    //Approve candidate
     async approveCandidate(req, res) {
         try {
             const id = req.params.id;
@@ -150,6 +155,7 @@ export class CandidatController {
             });
         }
     }
+    //Get all approved candidates
     async getAllApprovedCandidates(req, res) {
         try {
             const candidates = await prisma.user.findMany({
@@ -168,6 +174,7 @@ export class CandidatController {
             });
         }
     }
+    //Get all unapproved candidates
     async getAllUnapprovedCandidates(req, res) {
         try {
             const candidates = await prisma.user.findMany({
@@ -185,6 +192,7 @@ export class CandidatController {
             });
         }
     }
+    //Get candidate resume
     async getCandidateResume(req, res) {
         try {
             const id = req.params.id;

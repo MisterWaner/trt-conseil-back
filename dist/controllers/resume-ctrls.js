@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 export class ResumeController {
+    //Get all resumes
     async getAllResumes(req, res) {
         try {
             const resumes = await prisma.resume.findMany();
@@ -10,6 +11,7 @@ export class ResumeController {
             res.json({ "Erreur lors de la récupération des CV": error });
         }
     }
+    //Get resume by id
     async getOneResume(req, res) {
         try {
             const id = req.params.id;
@@ -31,6 +33,7 @@ export class ResumeController {
             });
         }
     }
+    //Post resume
     async postResume(req, res) {
         try {
             const { userId } = req.body;
@@ -78,6 +81,7 @@ export class ResumeController {
             });
         }
     }
+    //Update resume
     async updateResume(req, res) {
         try {
             const userId = req.body.userId;
@@ -124,6 +128,7 @@ export class ResumeController {
             });
         }
     }
+    //Delete resume
     async deleteResume(req, res) {
         try {
             const id = req.params.id;

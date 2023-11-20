@@ -149,12 +149,18 @@ export class AuthController {
     login = async (req, res) => {
         try {
             const { email, password } = req.body;
+            if (!email || !password)
+                return res
+                    .status(400)
+                    .json("Tours les champs sont obligatoires");
+            //Authenticate user
             const user = await authenticate(email, password);
             if (!user) {
                 return res.status(401).json({
                     message: "Utilisateur ou mot de passe incorrect",
                 });
             }
+            //Generate token
             const token = await generateToken(user);
             console.log(token);
             res.cookie("token", token, {
@@ -182,6 +188,7 @@ export class AuthController {
     //Logout
     logout = async (req, res) => {
         try {
+            //Clear cookie
             res.clearCookie("token", {
                 httpOnly: true,
                 secure: true,

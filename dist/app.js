@@ -9,7 +9,7 @@ import { fileURLToPath } from "url";
 config();
 /****************** Create app ***********************/
 const app = express();
-const port = process.env.SERVER_PORT;
+const port = process.env.PORT;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 /****************** Middlewares **********************/

@@ -11,7 +11,7 @@ config();
 
 /****************** Create app ***********************/
 const app = express();
-const port = process.env.SERVER_PORT;
+const port = process.env.PORT;
 
 const __filename: string = fileURLToPath(import.meta.url);
 const __dirname: string = dirname(__filename);

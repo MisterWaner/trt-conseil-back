@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 export class ConsultantController {
+    //Get all consultants
     async getAllConsultants(req, res) {
         try {
             const consultants = await prisma.user.findMany({
@@ -24,6 +25,7 @@ export class ConsultantController {
             });
         }
     }
+    //Get consultant by id
     async getConsultantById(req, res) {
         try {
             const id = req.params.id;
@@ -48,6 +50,7 @@ export class ConsultantController {
             });
         }
     }
+    //Update consultant
     async updateConsultant(req, res) {
         try {
             const id = req.params.id;
@@ -88,6 +91,7 @@ export class ConsultantController {
             });
         }
     }
+    //Delete consultant
     async deleteConsultant(req, res) {
         try {
             const id = req.params.id;

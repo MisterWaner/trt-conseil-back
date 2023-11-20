@@ -41,6 +41,7 @@ export class ApplicationController {
     //post application
     async postApplication(req, res) {
         try {
+            // Get offerId and userId from body
             const { offerId, userId } = await req.body;
             if (!offerId || !userId)
                 return res.status(400).json({ message: "Paramètre manquant" });
