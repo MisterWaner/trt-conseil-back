@@ -3,7 +3,7 @@ import { config } from "dotenv";
 config();
 export function sendEmail(mailOptions) {
     const transporter = nodemailer.createTransport({
-        host: "smtp.mail.outlook.com",
+        host: "smtp-mail.outlook.com",
         port: 587,
         secure: false,
         tls: {
@@ -20,9 +20,9 @@ export function sendEmail(mailOptions) {
         subject: "Test",
         text: "Cet email est un test",
     };
-    transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-            console.log(err);
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error(error);
         }
         else {
             console.log("Email sent: " + info.response);

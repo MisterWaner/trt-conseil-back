@@ -6,7 +6,6 @@ import cookieParser from "cookie-parser";
 import methodOverride from "method-override";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { sendEmail } from "./lib/mail/mailer.js";
 
 config();
 

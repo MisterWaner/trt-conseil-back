@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
+import nodemailer from "nodemailer";
+import fs from "fs";
+import { config } from "dotenv";
+
+config();
 
 export class ApplicationController {
     //get all applications
@@ -90,9 +95,71 @@ export class ApplicationController {
             const newApplication = await prisma.application.create({
                 data: {
                     offerId: offerId,
-                    userId: userId,
+                    userId: candidate.id,
                     applicationDate: new Date(),
                 },
+            });
+
+            /***********  Send email to recruiter ***********/
+            const recruiter = await prisma.user.findUnique({
+                where: {
+                    id: offer.userId,
+                },
+            });
+            if (!recruiter)
+                return res
+                    .status(404)
+                    .json({ message: "Recruteur introuvable" });
+
+            const resume = await prisma.resume.findFirst({
+                where: {
+                    userId: candidate.id,
+                },
+            });
+            if (!resume) return res.status(404).json({ message: "CV introuvable" });
+
+
+            const transporter = nodemailer.createTransport({
+                host: "smtp-mail.outlook.com",
+                port: 587,
+                secure: false,
+                tls: {
+                    ciphers: "SSLv3",
+                },
+                auth: {
+                    user: process.env.EMAIL_USER,
+                    pass: process.env.EMAIL_PASS,
+                },
+            });
+
+            const mailOptions = {
+                from: process.env.EMAIL_USER,
+                to: "pofeviv871@ikanid.com",
+                subject: "Test",
+                text: `Bonjour ${recruiter.firstname} ${recruiter.lastname},
+                
+                Je vous informe qu'un nouveau candidat a postulé au poste de ${offer.title}.
+                Voici les informations du candidat :
+                    * Nom : ${candidate.lastname}
+                    * Prénom : ${candidate.firstname}
+                    * Email : ${candidate.email}
+                    * CV en pièce jointe
+                     
+                Cordialement,
+                
+                L'équipe de TRT-Conseil.`,
+                attachments: [{
+                    filename: `${resume.name}`,
+                    content: fs.readFileSync(`upload/resumes/${resume.name}`)
+                }],
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.error(error);
+                } else {
+                    console.log("Email sent: " + info.response);
+                }
             });
 
             return res
@@ -217,7 +284,7 @@ export class ApplicationController {
                 return res
                     .status(404)
                     .json({ message: "Recruteur introuvable" });
-            
+
             const applications = await prisma.application.findMany({
                 where: {
                     offer: {
@@ -238,10 +305,8 @@ export class ApplicationController {
                 return res
                     .status(404)
                     .json({ message: "Aucune candidature trouvée" });
-            
-            res.status(200).json(applications);
 
-            
+            res.status(200).json(applications);
         } catch (error) {
             console.log(error);
             return res
